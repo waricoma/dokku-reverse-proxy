@@ -34,8 +34,8 @@ export class ReverseProxy {
 
   constructor(ops: { customPath?: string; targetHost?: string; targetPort?: number }) {
     this.customPath = ops.customPath || '';
-    this.targetHost = ops.targetHost || '127.0.0.1';
-    this.targetPort = ops.targetPort || 3000;
+    this.targetHost = ops.targetHost || '172.17.0.1';
+    this.targetPort = ops.targetPort || 8080;
 
     this.server = createServer((req: IncomingMessage, res: ServerResponse) => {
       const targetReq = request({
