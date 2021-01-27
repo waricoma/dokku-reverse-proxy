@@ -1,0 +1,68 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:12.20.0
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/test
+
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "./package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          command: |
+            curl $SLACK_WEBHOOK \
+            -s \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "{ \"text\": \":arrow_forward: ${CIRCLE_BRANCH} of https://circleci.com/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}\n> COVERAGE: *$(curl https://codecov.io/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/branch/master/graph/badge.txt)%* https://codecov.io/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}\n> STATUS: https://circleci.com/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.png?r=$(cat /dev/urandom | base64 | fold -w 10 | head -n 1)\" }"
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: v1-dependencies-{{ checksum "./package.json" }}
+
+      - run: yarn run lint
+
+      - run: yarn run test
+
+      - run: npx codecov
+
+      - run: yarn run build
+
+      - run:
+          command: |
+            curl $SLACK_WEBHOOK \
+            -s \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "{ \"text\": \":tada: ${CIRCLE_BRANCH} of https://circleci.com/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}\n> COVERAGE: *$(sleep 3 && curl https://codecov.io/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/branch/master/graph/badge.txt)%* https://codecov.io/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}\n> STATUS: https://circleci.com/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.png?r=$(cat /dev/urandom | base64 | fold -w 10 | head -n 1)\" }"
+
+      - run:
+          command: |
+            curl $SLACK_WEBHOOK \
+            -s \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d "{ \"text\": \":boom: ${CIRCLE_BRANCH} of https://circleci.com/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}\n> COVERAGE: *$(curl https://codecov.io/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/branch/master/graph/badge.txt)%* https://codecov.io/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}\n> STATUS: https://circleci.com/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.png?r=$(cat /dev/urandom | base64 | fold -w 10 | head -n 1)\" }"
+          when: on_fail

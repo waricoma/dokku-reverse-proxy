@@ -1,0 +1,79 @@
+{
+  "name": "dokku-reverse-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Simple reverse proxy server for dokku I will develop Web GUI (maybe)",
+  "author": "waricoma <waricoma@devne.co>",
+  "contributors": [
+    "waricoma <waricoma@devne.co>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/waricoma/dokku-reverse-proxy#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/waricoma/dokku-reverse-proxy.git"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow yarn",
+    "start": "node ./dist/index.js",
+    "quick": "ts-node ./index.ts",
+    "build": "ts-node ./build.ts && tsc --lib es2020",
+    "readme": "npx readme-md-generator",
+    "test": "jest",
+    "test:debug": "jest --watch",
+    "commit": "git cz",
+    "lint": "tsc --noEmit && eslint ./*.{js,ts,tsx} ./lib/*.ts ./__tests__/*.test.ts --config ./.eslintrc.js --no-ignore --cache --color --fix",
+    "ignore": "curl https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore -o ./.gitignore",
+    "document": "rm -rf docs && typedoc --plugin typedoc-plugin-markdown --out ./docs/ ./*.ts && license-checker --json > ./licenses.json"
+  },
+  "keywords": [
+    "Dokku",
+    "TypeScript"
+  ],
+  "bugs": {
+    "url": "https:@typescript-eslint/eslint-plugin//github.com/waricoma/dokku-reverse-proxy/issues"
+  },
+  "engines": {
+    "yarn": ">=1.22.4",
+    "node": ">=12.18.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run lint && yarn run test",
+      "pre-push": "#"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-emoji"
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "26.0.19",
+    "@types/node": "14.11.10",
+    "@typescript-eslint/eslint-plugin": "4.11.1",
+    "@typescript-eslint/parser": "4.11.1",
+    "add-text-to-markdown": "2.0.0",
+    "codecov": "3.8.1",
+    "commitizen": "4.2.2",
+    "cz-emoji": "1.3.1",
+    "eslint": "7.17.0",
+    "eslint-config-prettier": "7.1.0",
+    "eslint-plugin-jest": "24.1.3",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.3.0",
+    "husky": "4.3.7",
+    "jest": "26.6.3",
+    "license-checker": "25.0.1",
+    "only-allow": "1.0.0",
+    "prettier": "2.2.1",
+    "readme-md-generator": "1.0.0",
+    "shelljs": "0.8.4",
+    "ts-jest": "26.4.4",
+    "ts-node": "9.1.1",
+    "typedoc": "0.20.10",
+    "typedoc-plugin-markdown": "3.2.1",
+    "typescript": "4.1.3"
+  }
+}
