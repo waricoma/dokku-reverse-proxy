@@ -70,7 +70,7 @@
     "prettier": "2.2.1",
     "readme-md-generator": "1.0.0",
     "shelljs": "0.8.4",
-    "ts-jest": "26.5.4",
+    "ts-jest": "26.5.5",
     "ts-node": "9.1.1",
     "typedoc": "0.20.35",
     "typedoc-plugin-markdown": "3.6.0",
