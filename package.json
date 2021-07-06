@@ -63,7 +63,7 @@
     "eslint-plugin-jest": "24.3.4",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.4.0",
-    "husky": "7.0.0",
+    "husky": "7.0.1",
     "jest": "27.0.6",
     "license-checker": "25.0.1",
     "only-allow": "1.0.0",
